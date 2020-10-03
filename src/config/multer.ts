@@ -5,7 +5,7 @@ export default {
   storage: multer.diskStorage({
     destination: path.resolve(__dirname, '..', '..', 'uploads'),
     filename(request, file, callback) {
-      const fileName = file.originalname;
+      const fileName = file.filename;
 
       callback(null, fileName);
     },

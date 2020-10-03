@@ -14,7 +14,7 @@ export default class SessionController {
     const user: User = await db('users')
       .where('loginName', loginName)
       .where('password', password)
-      .select('loginName', 'name', 'email', 'password')
+      .select('loginName', 'name', 'email')
       .first();
 
     if (!user) {

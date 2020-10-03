@@ -38,7 +38,7 @@ export default class LoginController {
         password,
       });
 
-      return response.json({ loginName, email, name });
+      return response.json({ loginName, email, name, password });
     } catch {
       return response
         .status(400)

@@ -9,13 +9,7 @@ export default class OccurrencesController {
 
     const { latitude, longitude, occurrenceDatetime, loginName } = request.body;
 
-    console.log(
-      latitude,
-      longitude,
-      occurrenceDatetime,
-      loginName,
-      request.file.filename,
-    );
+    console.log(latitude, longitude, occurrenceDatetime, loginName);
 
     try {
       await db('occurrences').insert({
