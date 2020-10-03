@@ -1,11 +1,21 @@
 import { Request, Response } from 'express';
 import db from '../database/connection';
 
+import S3StorageProvider from '../providers/S3StorageProvider';
+
 export default class OccurrencesController {
   async create(request: Request, response: Response) {
+    const storageProvider = new S3StorageProvider();
+
     const { latitude, longitude, occurrenceDatetime, loginName } = request.body;
 
-    console.log(latitude, longitude, occurrenceDatetime, loginName);
+    console.log(
+      latitude,
+      longitude,
+      occurrenceDatetime,
+      loginName,
+      request.file.filename,
+    );
 
     try {
       await db('occurrences').insert({
@@ -13,7 +23,10 @@ export default class OccurrencesController {
         latitude,
         longitude,
         occurrenceDatetime,
+        occurrenceImage: request.file.filename,
       });
+
+      storageProvider.saveFile(request.file.filename);
 
       return response.json({
         loginName,
