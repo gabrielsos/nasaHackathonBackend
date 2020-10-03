@@ -11,8 +11,7 @@ export async function up(knex: Knex): Promise<void> {
       .references('loginName')
       .inTable('users');
     table.string('occurrenceDatetime').notNullable();
-    table.dateTime('createdAt').notNullable().defaultTo(knex.fn.now());
-    table.dateTime('updatedAt').notNullable().defaultTo(knex.fn.now());
+    table.timestamp('createdAt').notNullable().defaultTo(knex.fn.now());
   });
 }
 
