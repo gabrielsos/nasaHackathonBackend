@@ -9,7 +9,7 @@ exports.default = {
     storage: multer_1.default.diskStorage({
         destination: path_1.default.resolve(__dirname, '..', '..', 'uploads'),
         filename: function (request, file, callback) {
-            var fileName = file.filename;
+            var fileName = file.originalname;
             callback(null, fileName);
         },
     }),

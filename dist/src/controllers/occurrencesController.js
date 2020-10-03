@@ -52,7 +52,7 @@ var OccurrencesController = /** @class */ (function () {
                     case 0:
                         storageProvider = new S3StorageProvider_1.default();
                         _a = request.body, latitude = _a.latitude, longitude = _a.longitude, occurrenceDatetime = _a.occurrenceDatetime, loginName = _a.loginName;
-                        console.log(latitude, longitude, occurrenceDatetime, loginName);
+                        console.log(latitude, longitude, occurrenceDatetime, loginName, request.file.filename);
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 3, , 4]);
@@ -61,7 +61,7 @@ var OccurrencesController = /** @class */ (function () {
                                 latitude: latitude,
                                 longitude: longitude,
                                 occurrenceDatetime: occurrenceDatetime,
-                                occurrenceImage: request.file.filename,
+                                occurrenceImage: "https://nasa-hackathon-images.s3.us-east-2.amazonaws.com/" + request.file.filename,
                             })];
                     case 2:
                         _c.sent();

@@ -52,7 +52,7 @@ var DiskStorageProvider = /** @class */ (function () {
     }
     DiskStorageProvider.prototype.saveFile = function (file) {
         return __awaiter(this, void 0, void 0, function () {
-            var originalPath, ContentType, fileContent;
+            var originalPath, ContentType, fileContent, er_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -64,6 +64,9 @@ var DiskStorageProvider = /** @class */ (function () {
                         return [4 /*yield*/, fs_1.default.promises.readFile(originalPath)];
                     case 1:
                         fileContent = _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        _a.trys.push([2, 4, , 5]);
                         return [4 /*yield*/, this.client
                                 .putObject({
                                 Bucket: upload_1.default.config.aws.bucket,
@@ -73,10 +76,15 @@ var DiskStorageProvider = /** @class */ (function () {
                                 ContentType: ContentType,
                             })
                                 .promise()];
-                    case 2:
-                        _a.sent();
-                        return [4 /*yield*/, fs_1.default.promises.unlink(originalPath)];
                     case 3:
+                        _a.sent();
+                        return [3 /*break*/, 5];
+                    case 4:
+                        er_1 = _a.sent();
+                        console.log(er_1);
+                        return [3 /*break*/, 5];
+                    case 5: return [4 /*yield*/, fs_1.default.promises.unlink(originalPath)];
+                    case 6:
                         _a.sent();
                         return [2 /*return*/, file];
                 }

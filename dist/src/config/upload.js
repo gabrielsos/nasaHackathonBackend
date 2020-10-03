@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var path_1 = __importDefault(require("path"));
-var tmpFolder = path_1.default.resolve(__dirname, '..', '..', 'tmp');
+var tmpFolder = path_1.default.resolve(__dirname, '..', '..', 'uploads');
 exports.default = {
     driver: 's3',
     tmpFolder: tmpFolder,
