@@ -40,15 +40,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var connection_1 = __importDefault(require("../database/connection"));
+var S3StorageProvider_1 = __importDefault(require("../providers/S3StorageProvider"));
 var OccurrencesController = /** @class */ (function () {
     function OccurrencesController() {
     }
     OccurrencesController.prototype.create = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, latitude, longitude, occurrenceDatetime, loginName, _b;
+            var storageProvider, _a, latitude, longitude, occurrenceDatetime, loginName, _b;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
+                        storageProvider = new S3StorageProvider_1.default();
                         _a = request.body, latitude = _a.latitude, longitude = _a.longitude, occurrenceDatetime = _a.occurrenceDatetime, loginName = _a.loginName;
                         console.log(latitude, longitude, occurrenceDatetime, loginName);
                         _c.label = 1;
@@ -59,9 +61,11 @@ var OccurrencesController = /** @class */ (function () {
                                 latitude: latitude,
                                 longitude: longitude,
                                 occurrenceDatetime: occurrenceDatetime,
+                                occurrenceImage: request.file.filename,
                             })];
                     case 2:
                         _c.sent();
+                        storageProvider.saveFile(request.file.filename);
                         return [2 /*return*/, response.json({
                                 loginName: loginName,
                                 latitude: latitude,

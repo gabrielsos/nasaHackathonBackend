@@ -39,78 +39,67 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var connection_1 = __importDefault(require("../database/connection"));
-var LoginController = /** @class */ (function () {
-    function LoginController() {
+var fs_1 = __importDefault(require("fs"));
+var path_1 = __importDefault(require("path"));
+var mime_1 = __importDefault(require("mime"));
+var aws_sdk_1 = __importDefault(require("aws-sdk"));
+var upload_1 = __importDefault(require("../config/upload"));
+var DiskStorageProvider = /** @class */ (function () {
+    function DiskStorageProvider() {
+        this.client = new aws_sdk_1.default.S3({
+            region: 'us-east-2',
+        });
     }
-    LoginController.prototype.index = function (request, response) {
+    DiskStorageProvider.prototype.saveFile = function (file) {
         return __awaiter(this, void 0, void 0, function () {
-            var users;
+            var originalPath, ContentType, fileContent;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, connection_1.default('users').select('*')];
-                    case 1:
-                        users = _a.sent();
-                        return [2 /*return*/, response.json(users)];
-                }
-            });
-        });
-    };
-    LoginController.prototype.newPassword = function (request, response) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _a, loginName, password, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
                     case 0:
-                        _a = request.body, loginName = _a.loginName, password = _a.password;
-                        _c.label = 1;
+                        originalPath = path_1.default.resolve(upload_1.default.tmpFolder, file);
+                        ContentType = mime_1.default.getType(originalPath);
+                        if (!ContentType) {
+                            throw new Error('File not found');
+                        }
+                        return [4 /*yield*/, fs_1.default.promises.readFile(originalPath)];
                     case 1:
-                        _c.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, connection_1.default('users')
-                                .update('password', password)
-                                .where('loginName', loginName)];
+                        fileContent = _a.sent();
+                        return [4 /*yield*/, this.client
+                                .putObject({
+                                Bucket: upload_1.default.config.aws.bucket,
+                                Key: file,
+                                ACL: 'public-read',
+                                Body: fileContent,
+                                ContentType: ContentType,
+                            })
+                                .promise()];
                     case 2:
-                        _c.sent();
-                        return [2 /*return*/, response.status(200).json(loginName)];
+                        _a.sent();
+                        return [4 /*yield*/, fs_1.default.promises.unlink(originalPath)];
                     case 3:
-                        _b = _c.sent();
-                        return [2 /*return*/, response
-                                .status(400)
-                                .json({ erro: 'Não foi possível mudar sua senha' })];
-                    case 4: return [2 /*return*/];
+                        _a.sent();
+                        return [2 /*return*/, file];
                 }
             });
         });
     };
-    LoginController.prototype.create = function (request, response) {
+    DiskStorageProvider.prototype.deleteFile = function (file) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, loginName, email, name, password, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _a = request.body, loginName = _a.loginName, email = _a.email, name = _a.name, password = _a.password;
-                        _c.label = 1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.client
+                            .deleteObject({
+                            Bucket: upload_1.default.config.aws.bucket,
+                            Key: file,
+                        })
+                            .promise()];
                     case 1:
-                        _c.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, connection_1.default('users').insert({
-                                loginName: loginName,
-                                name: name,
-                                email: email,
-                                password: password,
-                            })];
-                    case 2:
-                        _c.sent();
-                        return [2 /*return*/, response.json({ loginName: loginName, email: email, name: name, password: password })];
-                    case 3:
-                        _b = _c.sent();
-                        return [2 /*return*/, response
-                                .status(400)
-                                .json({ erro: 'Usuário ou e-mail já cadastrado' })];
-                    case 4: return [2 /*return*/];
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return LoginController;
+    return DiskStorageProvider;
 }());
-exports.default = LoginController;
+exports.default = DiskStorageProvider;
