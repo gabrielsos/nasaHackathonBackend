@@ -16,8 +16,8 @@ const occurrencesController = new OccurrencesController();
 
 routes.get('/login', sessionController.create);
 routes.get('/users', loginController.index);
-routes.get('/occurrences', occurrencesController.index);
-routes.post('/createUser', upload.single('image'), loginController.create);
+routes.get('/occurrences', upload.single('image'), occurrencesController.index);
+routes.post('/createUser', loginController.create);
 routes.post('/createOccurrence', occurrencesController.create);
 routes.put('/newPassword', loginController.newPassword);
 
