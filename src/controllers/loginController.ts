@@ -27,8 +27,7 @@ export default class LoginController {
   }
 
   async create(request: Request, response: Response) {
-    const { loginName, email, name } = request.body;
-    const password = randomDigits();
+    const { loginName, email, name, password } = request.body;
 
     try {
       await db('users').insert({
