@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = __importDefault(require("express"));
+var sessionController_1 = __importDefault(require("./controllers/sessionController"));
+var loginController_1 = __importDefault(require("./controllers/loginController"));
+var occurrencesController_1 = __importDefault(require("./controllers/occurrencesController"));
+var routes = express_1.default.Router();
+var sessionController = new sessionController_1.default();
+var loginController = new loginController_1.default();
+var occurrencesController = new occurrencesController_1.default();
+routes.get('/login', sessionController.create);
+routes.get('/users', loginController.index);
+routes.get('/occurrences', occurrencesController.index);
+routes.post('/createUser', loginController.create);
+routes.post('/createOccurrence', occurrencesController.create);
+routes.put('/newPassword', loginController.newPassword);
+exports.default = routes;
