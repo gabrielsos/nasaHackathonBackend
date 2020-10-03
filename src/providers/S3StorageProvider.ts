@@ -25,15 +25,19 @@ export default class DiskStorageProvider implements IStorageProvider {
 
     const fileContent = await fs.promises.readFile(originalPath);
 
-    await this.client
-      .putObject({
-        Bucket: uploadConfig.config.aws.bucket,
-        Key: file,
-        ACL: 'public-read',
-        Body: fileContent,
-        ContentType,
-      })
-      .promise();
+    try {
+      await this.client
+        .putObject({
+          Bucket: uploadConfig.config.aws.bucket,
+          Key: file,
+          ACL: 'public-read',
+          Body: fileContent,
+          ContentType,
+        })
+        .promise();
+    } catch (er) {
+      console.log(er);
+    }
 
     await fs.promises.unlink(originalPath);
 

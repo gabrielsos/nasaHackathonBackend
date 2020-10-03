@@ -1,6 +1,6 @@
 import path from 'path';
 
-const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
+const tmpFolder = path.resolve(__dirname, '..', '..', 'uploads');
 
 interface IUploadConfig {
   driver: 's3';

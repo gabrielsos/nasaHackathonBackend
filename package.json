@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.766.0",
+    "celebrate": "^13.0.3",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",

@@ -9,7 +9,13 @@ export default class OccurrencesController {
 
     const { latitude, longitude, occurrenceDatetime, loginName } = request.body;
 
-    console.log(latitude, longitude, occurrenceDatetime, loginName);
+    console.log(
+      latitude,
+      longitude,
+      occurrenceDatetime,
+      loginName,
+      request.file.filename,
+    );
 
     try {
       await db('occurrences').insert({
@@ -17,7 +23,7 @@ export default class OccurrencesController {
         latitude,
         longitude,
         occurrenceDatetime,
-        occurrenceImage: request.file.filename,
+        occurrenceImage: `https://nasa-hackathon-images.s3.us-east-2.amazonaws.com/${request.file.filename}`,
       });
 
       storageProvider.saveFile(request.file.filename);
