@@ -15,7 +15,7 @@ var routes = express_1.default.Router();
 var sessionController = new sessionController_1.default();
 var loginController = new loginController_1.default();
 var occurrencesController = new occurrencesController_1.default();
-routes.get('/login', sessionController.create);
+routes.post('/login', sessionController.create);
 routes.get('/users', loginController.index);
 routes.get('/occurrences', occurrencesController.index);
 routes.post('/createUser', loginController.create);

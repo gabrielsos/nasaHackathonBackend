@@ -16,7 +16,7 @@ const sessionController = new SessionController();
 const loginController = new LoginController();
 const occurrencesController = new OccurrencesController();
 
-routes.get('/login', sessionController.create);
+routes.post('/login', sessionController.create);
 routes.get('/users', loginController.index);
 routes.get('/occurrences', occurrencesController.index);
 routes.post('/createUser', loginController.create);
